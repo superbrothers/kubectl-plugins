@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -e -o pipefail; [[ -n "$DEBUG" ]] && set -x
+
+exec kubectl get "$(kubectl api-resources --namespaced=true --verbs=list --output=name | tr "\n" "," | sed -e 's/,$//' -e 's/,events,/,/')" "$@"
+# vim: ai ts=2 sw=2 et sts=2 ft=sh
