@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require "yaml"
+
+out = ''
+YAML.load_stream(STDIN) do |doc|
+  if doc.key?("metadata")
+    doc["metadata"].delete("namespace")
+  end
+  puts YAML.dump(doc)
+end
+
+print out
+# vim: ai ts=2 sw=2 et sts=2 ft=ruby
