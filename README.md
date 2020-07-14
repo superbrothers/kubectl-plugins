@@ -16,6 +16,7 @@ See [Extend kubectl with plugins](https://kubernetes.io/docs/tasks/extend-kubect
 
 ## Plugins
 
-| Name                                   | Description                                                                    |
-|----------------------------------------|--------------------------------------------------------------------------------|
-| [`kubectl get-all`](./kubectl-get_all) | List truly all namespaced resources included custom resources (without events) |
+| Name                                     | Description                                                                    |
+|------------------------------------------|--------------------------------------------------------------------------------|
+| [`kubectl get-all`](./kubectl-get_all)   | List truly all namespaced resources included custom resources (without events) |
+| [`kubectl reset-ns`](./kubectl-reset_ns) | Delete `metadata.namespace` in manifests                                       |
