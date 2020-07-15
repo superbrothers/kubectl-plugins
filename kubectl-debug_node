@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+set -e -o pipefail; [[ -n "$DEBUG" ]] && set -x
+
+if [[ "$#" == 0 ]]; then
+  echo "Usage: $0 <node>" >&2
+  exit 1
+fi
+
+node="$1"
+kubectl_command=(kubectl)
+if [[ "$#" > 1 ]]; then
+  kubectl_command+=(${@:2})
+fi
+
+echo "Creating debugging pod for node/${node}..." >&2
+pod_name="node-debugger-$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1 ||:)"
+cat <<EOL | "${kubectl_command[@]}" create -f-
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ${pod_name}
+spec:
+  nodeName: ${node}
+  containers:
+  - image: debian
+    name: debian
+    command: ["tail", "-f", "/dev/null"]
+    volumeMounts:
+    - name: host-root
+      mountPath: /host
+    tty: true
+    stdin: true
+  hostIPC: true
+  hostNetwork: true
+  hostPID: true
+  restartPolicy: Never
+  volumes:
+  - name: host-root
+    hostPath:
+      path: /
+EOL
+
+trap "${kubectl_command} delete pod/${pod_name}" EXIT
+
+echo "Waiting for debugging pod is Ready..." >&2
+"${kubectl_command[@]}" wait --for=condition=Ready "pod/${pod_name}" --timeout=1m
+"${kubectl_command[@]}" exec -it "${pod_name}" "${args[@]}" -- /bin/sh
+# vim: ai ts=2 sw=2 et sts=2 ft=sh
