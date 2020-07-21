@@ -30,3 +30,4 @@ In addition to script plugins, there are also binary plugins.
 |----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
 | [`kubectl open-svc`](https://github.com/superbrothers/kubectl-open-svc-plugin)                                             | Make services accessible via their ClusterIP from outside your cluster     |
 | [`kubectl view-serviceaccount-kubeconfig`](https://github.com/superbrothers/kubectl-view-serviceaccount-kubeconfig-plugin) | Show a kubeconfig to access the apiserver with a specified serviceaccount. |
+| [`kubectl sort-manifests`](https://github.com/superbrothers/ksort)                                                         | Sort manfest files in a proper order by Kind.                              |
